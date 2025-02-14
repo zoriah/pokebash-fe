@@ -4,6 +4,8 @@ import MainLayout from "./Layout/MainLayout";
 import HomePage from "./pages/HomePage";
 import LeaderboardPage from "./pages/LeaderboardPage";
 import TestServiceApi from "./test/TestServiceApi";
+import MyRosterPage from "./pages/MyRosterPage";
+import BattlePage from "./pages/BattlePage";
 
 function App() {
   return (
@@ -13,7 +15,8 @@ function App() {
         <Route index element={<HomePage />} />
         <Route path="home" element={<HomePage />} />
         <Route path="/leaderboard" element={<LeaderboardPage />} />
-
+        <Route path="/roster" element={<MyRosterPage />} />
+        <Route path="/battle" element={<BattlePage />} />
         <Route path="/test" element={<TestServiceApi />} />
         {/* Register Page Noa Bahman */}
         {/* <Route path="registrationform" element={<RegistrationForm />} /> */}
