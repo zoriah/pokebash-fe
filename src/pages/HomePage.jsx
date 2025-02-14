@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { pokeAPI } from "../pokeApi/api";
+import { useNavigate } from "react-router-dom";
 
 export default () => {
+  const navigate = useNavigate();
   const [pokemonList, setPokemonList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -10,7 +12,7 @@ export default () => {
     const fetchPokemonList = async () => {
       try {
         // Fetch the list of Pokémon (first 10 Pokémon for example)
-        const response = await pokeAPI.get("/pokemon?limit=60");
+        const response = await pokeAPI.get("/pokemon");
         const pokemons = response.data.results;
 
         // Fetch detailed data for each Pokémon
@@ -41,11 +43,10 @@ export default () => {
     );
   }
 
-  if (error)
-    return <div className="text-center text-red-500">Error: {error}</div>;
+  if (error) <div className="text-center text-red-500">Error: {error}</div>;
 
   return (
-    <div className="flex flex-wrap justify-center mt-10 gap-6">
+    <div className="flex flex-wrap justify-center gap-6">
       {pokemonList.map((pokemon) => (
         <div
           key={pokemon.id}
@@ -78,4 +79,3 @@ export default () => {
     </div>
   );
 };
-
