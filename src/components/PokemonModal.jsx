@@ -1,77 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { pokeAPI } from "../pokeApi/api";
-import PokemonCard from "../components/PokemonCard";
-import { useRoster } from "../contexts/RosterContext";
+import React from "react";
 
-const HomePage = () => {
-  const [pokemonList, setPokemonList] = useState([]);
-  const { roster, setRoster, toggleRoster } = useRoster();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [selectedPokemon, setSelectedPokemon] = useState(null);
-
-  useEffect(() => {
-    const fetchPokemonList = async () => {
-      try {
-        const response = await pokeAPI.get("/pokemon?limit=60");
-        const pokemons = response.data.results;
-
-        const detailedPokemons = await Promise.all(
-          pokemons.map(async (pokemon) => {
-            const pokemonData = await pokeAPI.get(pokemon.url);
-            return pokemonData.data;
-          })
-        );
-
-        setPokemonList(detailedPokemons);
-        setLoading(false);
-      } catch (err) {
-        setError(err.message);
-        setLoading(false);
-      }
-    };
-
-    fetchPokemonList();
-  }, []);
-
-  // Open & Close Modal
-  const openModal = (pokemon) => setSelectedPokemon(pokemon);
-  const closeModal = () => setSelectedPokemon(null);
-
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-yellow-500 border-solid"></div>
-      </div>
-    );
-  }
-
-  if (error)
-    return <div className="text-center text-red-500">Error: {error}</div>;
-
-  return (
-    <div className="container mx-auto px-4 mt-10">
-      {/* Pokémon Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
-        {pokemonList.map((pokemon) => (
-          <PokemonCard key={pokemon.id} pokemon={pokemon} onClick={openModal} />
-        ))}
-      </div>
-
-      {/* Modal */}
-      {selectedPokemon && (
-        <PokemonModal
-          pokemon={selectedPokemon}
-          closeModal={closeModal}
-          toggleRoster={toggleRoster}
-          roster={roster}
-        />
-      )}
-    </div>
-  );
-};
-
-/* 🔴 Pokémon Modal Component */
 const PokemonModal = ({ pokemon, closeModal, toggleRoster, roster }) => {
   return (
     <div className="fixed inset-0 flex justify-center items-center bg-gray-900 bg-opacity-50 backdrop-blur-sm">
@@ -95,7 +23,7 @@ const PokemonModal = ({ pokemon, closeModal, toggleRoster, roster }) => {
             {pokemon.name}
           </h1>
 
-          {/* Type & Heart Icon */}
+          {/* Type and Heart Button */}
           <div className="flex items-center gap-4 mt-2">
             <p className="text-md font-semibold">
               Type:{" "}
@@ -126,7 +54,7 @@ const PokemonModal = ({ pokemon, closeModal, toggleRoster, roster }) => {
           ))}
         </ul>
 
-        {/* Stats with Progress Bars */}
+        {/* Stats */}
         <h3 className="text-lg font-semibold mt-4">Stats</h3>
         <ul className="w-full mt-2 space-y-3">
           {pokemon.stats.map((stat, index) => (
@@ -150,7 +78,7 @@ const PokemonModal = ({ pokemon, closeModal, toggleRoster, roster }) => {
   );
 };
 
-/* 🟢 Function to assign colors for stats */
+/* Assigning Colors */
 const getStatColor = (index) => {
   const colors = [
     "bg-green-500",
@@ -163,4 +91,4 @@ const getStatColor = (index) => {
   return colors[index % colors.length];
 };
 
-export default HomePage;
+export default PokemonModal;

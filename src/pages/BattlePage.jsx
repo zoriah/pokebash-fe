@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { pokeAPI } from "../pokeApi/api";
+import { useRoster } from "../contexts/RosterContext"; // 📌 Imported Roster
+import { pokeAPI } from "../pokeApi/api"; // 📌 Import PokéAPI service
 import {
   createScore,
   updateScore,
@@ -7,33 +8,14 @@ import {
 } from "../pokeApi/services";
 
 const BattlePage = () => {
+  const { roster } = useRoster(); // 📌 Get only Pokémon added to favorites
   const [username, setUsername] = useState("");
-  const [pokemonList, setPokemonList] = useState([]);
   const [selectedPokemon, setSelectedPokemon] = useState(null);
   const [enemyPokemon, setEnemyPokemon] = useState(null);
   const [battleResult, setBattleResult] = useState(null);
   const [leaderboard, setLeaderboard] = useState([]);
 
   useEffect(() => {
-    const fetchPokemonList = async () => {
-      try {
-        const response = await pokeAPI.get("/pokemon?limit=60");
-        const pokemons = response.data.results;
-
-        const detailedPokemons = await Promise.all(
-          pokemons.map(async (pokemon) => {
-            const pokemonData = await pokeAPI.get(pokemon.url);
-            return pokemonData.data;
-          })
-        );
-
-        setPokemonList(detailedPokemons);
-      } catch (error) {
-        console.error("Error fetching Pokémon list", error);
-      }
-    };
-
-    fetchPokemonList();
     fetchLeaderboardData();
   }, []);
 
@@ -42,22 +24,66 @@ const BattlePage = () => {
     setLeaderboard(data);
   };
 
-  // Select Pokémon for battle
+  // Set selected Pokémon
   const handleSelectPokemon = (pokemon) => {
     setSelectedPokemon(pokemon);
     setBattleResult(null);
   };
 
-  // Randomly select enemy Pokémon
-  const generateEnemyPokemon = () => {
-    const randomIndex = Math.floor(Math.random() * pokemonList.length);
-    setEnemyPokemon(pokemonList[randomIndex]);
+  // Fetch a random opponent Pokémon from PokéAPI
+  const generateEnemyPokemon = async () => {
+    try {
+      const randomId = Math.floor(Math.random() * 1010) + 1; // Get a random Pokémon ID (1-1010)
+      const response = await pokeAPI.get(`/pokemon/${randomId}`); // Fetch data from API
+      return response.data; // Return Pokémon data
+    } catch (error) {
+      console.error("Error fetching enemy Pokémon:", error);
+      return null;
+    }
   };
 
-  // Calculate Battle Result
+  // Handle fight button click
+  const handleFightClick = async () => {
+    // if (!selectedPokemon || !username) {
+    //   alert("Please enter a username and select a Pokémon!");
+    //   return;
+    // }
+    if (!selectedPokemon) {
+      alert("Please select a Pokémon!");
+      return;
+    }
+    if (!selectedPokemon || !username) {
+      alert("Please enter a username ");
+      return;
+    }
+
+    const enemy = await generateEnemyPokemon(); // Wait for enemy Pokémon to be fetched
+    if (enemy) {
+      setEnemyPokemon(enemy); // Set the enemy Pokémon
+      setTimeout(handleBattle, 500); // Start battle after enemy is set
+    } else {
+      alert("Failed to fetch opponent Pokémon. Try again!");
+    }
+  };
+
+  // Battle mechanism
   const handleBattle = () => {
-    if (!selectedPokemon || !enemyPokemon || !username) {
-      alert("Please enter a username and select a Pokémon!");
+    generateEnemyPokemon();
+    // if (!selectedPokemon || !enemyPokemon || !username) {
+    //   alert("Please enter a username and select a Pokémon!");
+    //   return;
+    // }
+
+    if (!selectedPokemon) {
+      alert("Please select a Pokémon!");
+      return;
+    }
+    if (!enemyPokemon) {
+      alert("enemyPokemon is null!");
+      return;
+    }
+    if (!username) {
+      alert("Please enter a username ");
       return;
     }
 
@@ -91,7 +117,7 @@ const BattlePage = () => {
     }
   };
 
-  // Update or Create Score in Leaderboard
+  // Update leaderboard
   const updateLeaderboard = async (username, points) => {
     const existingPlayer = leaderboard.find(
       (entry) => entry.username === username
@@ -121,28 +147,34 @@ const BattlePage = () => {
       </div>
 
       <div className="flex justify-center gap-8">
-        {/* Pokémon Selection Scrollable List */}
+        {/* Pokémon Selection (Only Roster Pokémon will be displayed) */}
         <div className="w-1/4 h-96 overflow-y-auto border p-4 rounded-lg shadow-lg">
-          <h2 className="text-lg font-bold text-center mb-2">Select Pokémon</h2>
-          <div className="grid grid-cols-2 gap-4">
-            {pokemonList.map((pokemon) => (
-              <div
-                key={pokemon.id}
-                className="p-2 bg-white rounded-lg shadow-md flex flex-col items-center cursor-pointer hover:bg-gray-200"
-                onClick={() => handleSelectPokemon(pokemon)}
-              >
-                <img
-                  src={pokemon.sprites.front_default}
-                  alt={pokemon.name}
-                  className="w-16 h-16 object-contain"
-                />
-                <p className="capitalize">{pokemon.name}</p>
-              </div>
-            ))}
-          </div>
+          <h2 className="text-lg font-bold text-center mb-2">
+            Select Pokémon from Roster
+          </h2>
+          {roster.length === 0 ? (
+            <p className="text-center text-gray-500">No Pokémon in roster.</p>
+          ) : (
+            <div className="grid grid-cols-2 gap-4">
+              {roster.map((pokemon) => (
+                <div
+                  key={pokemon.id}
+                  className="p-2 bg-white rounded-lg shadow-md flex flex-col items-center cursor-pointer hover:bg-gray-200"
+                  onClick={() => handleSelectPokemon(pokemon)}
+                >
+                  <img
+                    src={pokemon.sprites.front_default}
+                    alt={pokemon.name}
+                    className="w-16 h-16 object-contain"
+                  />
+                  <p className="capitalize">{pokemon.name}</p>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
-        {/* Player & Enemy Pokémon Display */}
+        {/* Selected Pokémon and Opponent Pokémon */}
         <div className="w-1/4 flex flex-col items-center">
           <h2 className="text-xl font-bold mb-3">Your Pokémon</h2>
           {selectedPokemon ? (
@@ -179,10 +211,7 @@ const BattlePage = () => {
       {/* Fight Button */}
       <div className="text-center mt-6">
         <button
-          onClick={() => {
-            generateEnemyPokemon();
-            setTimeout(handleBattle, 500);
-          }}
+          onClick={handleFightClick}
           className="bg-yellow-500 text-white px-6 py-3 rounded-lg text-xl font-bold shadow-lg hover:bg-yellow-600"
         >
           Fight! ⚔️
