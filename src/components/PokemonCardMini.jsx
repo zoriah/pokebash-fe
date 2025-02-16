@@ -36,16 +36,16 @@ const PokemonCardMini = ({ pokemon, onClick }) => {
       onClick={() => onClick(pokemon)}
     >
       {/* Pokémon Image */}
-      <div className="relative w-32 h-32 flex justify-center items-center bg-white rounded-full shadow-md">
+      <div className="relative  flex justify-center items-center bg-white rounded-full shadow-md">
         <img
           src={pokemon.sprites.other["official-artwork"].front_default}
           alt={pokemon.name}
-          className="w-28 h-28 object-contain drop-shadow-lg"
+          className=" object-contain drop-shadow-lg"
         />
       </div>
 
       {/* Pokémon Name & Type */}
-      <h1 className="text-xl font-extrabold text-gray-800 capitalize drop-shadow-md">
+      <h1 className="text-sm font-extrabold text-gray-800 capitalize drop-shadow-md">
         {pokemon.name}
       </h1>
       <p
