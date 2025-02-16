@@ -1,7 +1,7 @@
 import React from "react";
 import { useRoster } from "../contexts/RosterContext";
 
-const PokemonCard = ({ pokemon, onClick }) => {
+const PokemonCardMini = ({ pokemon, onClick }) => {
   const { roster, toggleRoster } = useRoster();
   const isFavorite = roster.some((p) => p.id === pokemon.id);
 
@@ -32,7 +32,7 @@ const PokemonCard = ({ pokemon, onClick }) => {
 
   return (
     <div
-      className={`p-4 rounded-2xl shadow-lg flex flex-col items-center relative cursor-pointer hover:scale-105 transition-transform border-4 ${typeStyle}`}
+      className={`rounded-2xl shadow-lg flex flex-col items-center relative cursor-pointer hover:scale-95 transition-transform border-4 ${typeStyle}`}
       onClick={() => onClick(pokemon)}
     >
       {/* Pokémon Image */}
@@ -45,11 +45,11 @@ const PokemonCard = ({ pokemon, onClick }) => {
       </div>
 
       {/* Pokémon Name & Type */}
-      <h1 className="text-xl font-extrabold text-gray-800 capitalize mt-3 drop-shadow-md">
+      <h1 className="text-xl font-extrabold text-gray-800 capitalize drop-shadow-md">
         {pokemon.name}
       </h1>
       <p
-        className={`text-sm font-bold px-3 py-1 rounded-md uppercase shadow-md ${typeStyle}`}
+        className={`text-sm px-3 py-1 rounded-md uppercase shadow-md ${typeStyle}`}
       >
         {pokemonType}
       </p>
@@ -61,15 +61,9 @@ const PokemonCard = ({ pokemon, onClick }) => {
           e.stopPropagation();
           toggleRoster(pokemon);
         }}
-      >
-        {isFavorite ? (
-          <span className="text-red-500 drop-shadow-md">❤️</span>
-        ) : (
-          <span className="text-gray-400 drop-shadow-md">🤍</span>
-        )}
-      </button>
+      ></button>
     </div>
   );
 };
 
-export default PokemonCard;
+export default PokemonCardMini;

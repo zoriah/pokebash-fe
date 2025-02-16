@@ -4,15 +4,15 @@ import { fetchLeaderboard } from "../pokeApi/services";
 //import bgImage from "../img/leaderboard_bg.jpg";
 import bgImage from "../img/bg.jpg";
 
-const initialLeaderboard = [
-  { _id: "1", username: "AshKetchum", score: 1500 },
-  { _id: "2", username: "Misty", score: 1400 },
-  { _id: "3", username: "Brock", score: 1300 },
-  { _id: "4", username: "TeamRocket", score: 800 },
-];
+// const initialLeaderboard = [
+//   { _id: "1", username: "AshKetchum", score: 1500 },
+//   { _id: "2", username: "Misty", score: 1400 },
+//   { _id: "3", username: "Brock", score: 1300 },
+//   { _id: "4", username: "TeamRocket", score: 800 },
+// ];
 
 const Leaderboard = () => {
-  const [leaderboard, setLeaderboard] = useState(initialLeaderboard);
+  const [leaderboard, setLeaderboard] = useState(/*initialLeaderboard*/);
 
   useEffect(() => {
     const loadLeaderboard = async () => {
@@ -30,11 +30,12 @@ const Leaderboard = () => {
 
   return (
     <div
-      className="w-screen h-screen flex flex-col items-center justify-center border-4 border-red-500 shadow-xl"
+      className="w-screen h-screen flex flex-col items-center justify-center shadow-xl mt-16"
       style={{
         backgroundImage: `url(${bgImage})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
+        backgroundAttachment: "fixed",
       }}
     >
       <h2
