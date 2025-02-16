@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const backendAPI = axios.create({
-  baseURL: "http://localhost:2005",
+  baseURL: "http://localhost:8000",
   //When the backend project is ready and working, the port should be replaced here for port:2005
 });
 
