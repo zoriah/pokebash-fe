@@ -7,6 +7,7 @@ import {
   fetchLeaderboard,
 } from "../pokeApi/services";
 import PokemonCardMini from "../components/PokemonCardMini";
+import PokemonCardWithStats from "../components/PokemonCardWithStats";
 
 const BattlePage = () => {
   const { roster } = useRoster();
@@ -145,14 +146,14 @@ const BattlePage = () => {
         <div className="w-1/4 bg-blue-100 p-6 rounded-lg shadow-lg flex flex-col items-center">
           <h2 className="text-xl font-bold mb-3">Your Pokémon</h2>
           {selectedPokemon && (
-            <PokemonCardMini pokemon={selectedPokemon} showHeart={false} />
+            <PokemonCardWithStats pokemon={selectedPokemon} showHeart={false} />
           )}
         </div>
 
         <div className="w-1/4 bg-red-100 p-6 rounded-lg shadow-lg flex flex-col items-center">
           <h2 className="text-xl font-bold mb-3">Opponent</h2>
           {enemyPokemon && (
-            <PokemonCardMini pokemon={enemyPokemon} showHeart={false} />
+            <PokemonCardWithStats pokemon={enemyPokemon} showHeart={false} />
           )}
         </div>
       </div>
