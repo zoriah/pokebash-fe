@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
-    <header className="bg-gradient-to-r from-yellow-500 via-red-500 to-blue-500 text-white p-4 shadow-md">
+    <header className="fixed top-0 left-0 w-full bg-gradient-to-r from-yellow-500 via-red-500 to-blue-500 text-white p-4 shadow-md z-50">
       <nav className="container mx-auto flex justify-between items-center">
         {/* Left Side - Title */}
         <h1 className="text-2xl font-bold flex items-center">
@@ -17,13 +17,13 @@ const Header = () => {
             </Link>
           </li>
           <li>
-            <Link to="/battle" className="hover:underline">
-              Battle
+            <Link to="/roster" className="hover:underline">
+              Roster
             </Link>
           </li>
           <li>
-            <Link to="/roster" className="hover:underline">
-              Roster
+            <Link to="/battle" className="hover:underline">
+              Battle
             </Link>
           </li>
           <li>

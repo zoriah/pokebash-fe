@@ -68,7 +68,7 @@ const TestServiceApi = () => {
   };
 
   return (
-    <div className="p-5 bg-gray-100 rounded-lg shadow-lg max-w-md mx-auto">
+    <div className="p-5 bg-gray-100 rounded-lg shadow-lg max-w-md mx-auto mt-35">
       <h2 className="text-2xl font-bold text-center mb-4">
         Leaderboard API Test
       </h2>

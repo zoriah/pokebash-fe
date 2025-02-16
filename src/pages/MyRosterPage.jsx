@@ -12,7 +12,7 @@ const MyRosterPage = () => {
   const closeModal = () => setSelectedPokemon(null);
 
   return (
-    <div className="container mx-auto px-4 mt-10">
+    <div className="container min-h-screen backdrop-blur-md bg-white/30 rounded-3xl bg-fixed mx-auto px-4 mt-25 mb-25">
       <h1 className="text-3xl font-bold text-center mb-6">My Roster</h1>
 
       {roster.length === 0 ? (
@@ -20,7 +20,7 @@ const MyRosterPage = () => {
           No Pokémon in your roster yet.
         </p>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6 pl-10 pr-10">
           {roster.map((pokemon) => (
             <PokemonCard
               key={pokemon.id}
