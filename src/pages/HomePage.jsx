@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { pokeAPI } from "../pokeApi/api";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
+  const navigate = useNavigate();
   const [pokemonList, setPokemonList] = useState([]);
   const [roster, setRoster] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -11,7 +13,8 @@ const HomePage = () => {
   useEffect(() => {
     const fetchPokemonList = async () => {
       try {
-        const response = await pokeAPI.get("/pokemon?limit=60");
+        // Fetch the list of Pokémon (first 10 Pokémon for example)
+        const response = await pokeAPI.get("/pokemon");
         const pokemons = response.data.results;
 
         const detailedPokemons = await Promise.all(
@@ -59,12 +62,10 @@ const HomePage = () => {
     );
   }
 
-  if (error)
-    return <div className="text-center text-red-500">Error: {error}</div>;
+  if (error) <div className="text-center text-red-500">Error: {error}</div>;
 
   return (
-    <div className="flex flex-wrap justify-center mt-10 gap-6">
-      {/* <h2>Ilona</h2> */}
+    <div className="flex flex-wrap justify-center gap-6">
       {pokemonList.map((pokemon) => (
         <div
           key={pokemon.id}
@@ -184,5 +185,3 @@ const HomePage = () => {
     </div>
   );
 };
-
-export default HomePage;

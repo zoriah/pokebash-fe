@@ -1,7 +1,11 @@
-import React from "react";
+// import { useEffect, useState } from "react";
 
 const LeaderboardPage = () => {
-  return <div>Leaderboard Page</div>;
+  return (
+    <>
+      <h1>Leaderboard</h1>
+    </>
+  );
 };
 
 export default LeaderboardPage;
