@@ -14,7 +14,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchPokemonList = async () => {
       try {
-        const response = await pokeAPI.get("/pokemon?limit=60");
+        const response = await pokeAPI.get("/pokemon?limit=150");
         const pokemons = response.data.results;
 
         const detailedPokemons = await Promise.all(

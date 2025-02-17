@@ -1,19 +1,18 @@
 import axios from "axios";
 
-const BACKEND_URL = "http://localhost:8000/leaderboard"; // Backend URL
+const BACKEND_URL = "https://pokebash-be.onrender.com/"; // Backend URL
 
 export const backendAPI = axios.create({
-  baseURL:BACKEND_URL,
-  headers: { 
-    "Content-Type": "application/json"
-},
+  baseURL: BACKEND_URL,
+  headers: {
+    "Content-Type": "application/json",
+  },
   //When the backend project is ready and working, the port should be replaced here for port:2005
 });
 
-
 export const fetchLeaderboard = async () => {
   try {
-    const response = await backendAPI.get('/');
+    const response = await backendAPI.get("/");
     //const response = await axios.get(BACKEND_URL);
     console.log("API Response:", response); // Debugging
     //return Array.isArray(response.data) ? response.data : []; // Ensure it’s always an array
@@ -27,7 +26,7 @@ export const fetchLeaderboard = async () => {
 // 📌 create a score
 export const createScore = async (username, score) => {
   try {
-    const response = await backendAPI.post('/', { username, score });
+    const response = await backendAPI.post("/", { username, score });
     return response.data;
   } catch (error) {
     console.error("failed to post data", error);
