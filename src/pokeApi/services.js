@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BACKEND_URL = "https://pokebash-be.onrender.com/"; // Backend URL
+const BACKEND_URL = "https://pokebash-be.onrender.com/leaderboard"; // Backend URL
 
 export const backendAPI = axios.create({
   baseURL: BACKEND_URL,
