@@ -4,15 +4,8 @@ import { fetchLeaderboard } from "../pokeApi/services";
 //import bgImage from "../img/leaderboard_bg.jpg";
 import bgImage from "../img/bg.jpg";
 
-// const initialLeaderboard = [
-//   { _id: "1", username: "AshKetchum", score: 1500 },
-//   { _id: "2", username: "Misty", score: 1400 },
-//   { _id: "3", username: "Brock", score: 1300 },
-//   { _id: "4", username: "TeamRocket", score: 800 },
-// ];
-
 const Leaderboard = () => {
-  const [leaderboard, setLeaderboard] = useState(/*initialLeaderboard*/);
+  const [leaderboard, setLeaderboard] = useState();
 
   useEffect(() => {
     const loadLeaderboard = async () => {
@@ -22,7 +15,7 @@ const Leaderboard = () => {
         setLeaderboard(data);
       } else {
         console.error("Invalid data received:", data);
-        setLeaderboard(initialLeaderboard);
+        // setLeaderboard(initialLeaderboard);
       }
     };
     loadLeaderboard();
